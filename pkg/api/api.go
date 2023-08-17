@@ -11,6 +11,7 @@ import (
 )
 
 type Api struct {
+	Debug  bool
 	Port   int
 	DB     *bbolt.DB
 	Logger *slog.Logger

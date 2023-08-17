@@ -28,6 +28,7 @@ func main() {
 	defer bdb.Close()
 
 	api := api.Api{
+		Debug:       *debugFlag,
 		Port:        *portFlag,
 		DB:          bdb,
 		Logger:      logger,

@@ -11,8 +11,7 @@ import (
 func (api *Api) handleTodoList(w http.ResponseWriter, r *http.Request) {
 	todos, err := api.TodoService.GetAll()
 	if err != nil {
-		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r, "err", err)
 		return
 	}
 
@@ -32,8 +31,7 @@ func (api *Api) handleTodoGet(w http.ResponseWriter, r *http.Request) {
 			api.notFoundResponse(w, r)
 			return
 		}
-		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r, "err", err)
 		return
 	}
 
@@ -45,7 +43,7 @@ func (api *Api) handleTodoCreate(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&t)
 	if err != nil {
 		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r)
 		return
 	}
 
@@ -56,8 +54,7 @@ func (api *Api) handleTodoCreate(w http.ResponseWriter, r *http.Request) {
 
 	err = api.TodoService.Insert(&t)
 	if err != nil {
-		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r, "err", err)
 		return
 	}
 
@@ -74,8 +71,7 @@ func (api *Api) handleTodoUpdate(w http.ResponseWriter, r *http.Request) {
 	var t data.Todo
 	err = json.NewDecoder(r.Body).Decode(&t)
 	if err != nil {
-		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r, "err", err)
 		return
 	}
 
@@ -86,8 +82,7 @@ func (api *Api) handleTodoUpdate(w http.ResponseWriter, r *http.Request) {
 
 	err = api.TodoService.Update(id, &t)
 	if err != nil {
-		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r, "err", err)
 		return
 	}
 
@@ -107,8 +102,7 @@ func (api *Api) handleTodoDelete(w http.ResponseWriter, r *http.Request) {
 			api.notFoundResponse(w, r)
 			return
 		}
-		api.Logger.Error(err.Error())
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		api.internalErrorResponse(w, r, "err", err)
 		return
 	}
 

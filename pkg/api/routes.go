@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func (api *Api) routes() *chi.Mux {
+func (api *Api) routes() http.Handler {
 	r := chi.NewRouter()
 
 	r.Get("/todos", api.handleTodoList)
@@ -16,7 +16,7 @@ func (api *Api) routes() *chi.Mux {
 	r.Put("/todos/{id}", api.handleTodoUpdate)
 	r.Delete("/todos/{id}", api.handleTodoDelete)
 
-	return r
+	return api.recoverPanic(r)
 }
 
 func (api *Api) getID(r *http.Request) (int, error) {
